@@ -37,14 +37,16 @@ client.on("messageCreate", async (msg) => {
             "**Bot Tepok Bulu**\n" +
             "=================\n" +
             "- **/add** to join badminton\n" +
-            "- **/remove {name}** to leave badminton\n" +
+            "- **/quit** to leave badminton\n" +
             "- **/list** to view all players\n" +
-            "- **/pay {name}** to update payment status\n" +
-            "- **/title {Content}** to set badminton title. Ex: /title Garuda Lap:3-4 Jam:16:00-18:00" 
+            "- **/pay** to update payment status\n" +
+            "- **/title {Content}** to set badminton title. Ex: /title Garuda Lap:3-4 Jam:16:00-18:00\n" +
+            "- **/price {Price}** to set badminton price. Ex: /price 2750000\n" +
+            "- **/clear** to clear current list"
         );
     }
     else if(msg.content === '/add'){
-        const name = msg.author.username
+        const name = msg.author.displayName
         if(name){
             let flag = false;
             for(let item of list){
@@ -68,7 +70,7 @@ client.on("messageCreate", async (msg) => {
         printList()
     }
     else if(msg.content === '/quit'){
-        const name = msg.author.username
+        const name = msg.author.displayName
 
         if(name){
             const index = list.findIndex(item => item.name == name)
@@ -87,13 +89,13 @@ client.on("messageCreate", async (msg) => {
         printList()
     }
     else if(msg.content === '/pay'){
-        const name = msg.author.username
+        const name = msg.author.displayName
         if(name){
             let flag = false;
             for(let item of list){
                 if(item.name == name){
-                    item.pay_status = true;
-                    flag = "Already paid the bill"
+                    item.pay_status = " already paid the bill";
+                    flag = true
                     break
                 }
             }
@@ -121,10 +123,6 @@ client.on("messageCreate", async (msg) => {
                 price = newPrice
                 await msg.reply(`The price has been set to ${newPrice}`)
             }
-        }
-        else if(msg.content === "/calc"){
-            const individualPrice = price / list.length
-            await msg.reply(`Title: ${title}\nCurrent list:\n${formattedList}\nEach person needs to pay Rp. ${individualPrice}`)
         }
         else if(msg.content === "/clear"){
             price = 0
